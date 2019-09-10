@@ -1,0 +1,189 @@
+' Gambas module file
+
+'' This module implement an singleton connection to database and functions to interact with it.
+
+Export
+
+Private $hConn As Connection
+Private $bconOpen As Boolean
+
+Private Sub Init()
+
+  If $bconOpen Then Return
+
+  'Open conection
+  $hConn = New Connection
+
+  With $hConn
+     .Type = "sqlite3"
+     .Host = Application.path
+     .Name = "database.db"
+  End With
+
+  Try $hConn.Open()
+  If Not Error Then
+    $bconOpen = True
+  Else
+    $bconOpen = False
+    Error.Raise("Cannot open Database. Error = " & Error.Text)
+    Quit
+  Endif
+
+End
+
+'' Check the required permissions
+Private Sub AdminRequired()
+
+  If Not GetIsAdmin(Session["username"]) Then
+    Error.Raise("You do not have permission to perform this operation")
+  Endif
+
+End
+
+'' Check the required permissions
+Private Sub AdminOrOwnRequired(username As String)
+  Dim sessionUser As String
+
+  sessionUser = Session["username"]
+
+  If Not UserExists(sessionUser) Then
+    Error.Raise("You do not have permission to perform this operation")
+  Endif
+
+  If username = sessionUser Then Return
+  If GetIsAdmin(sessionUser) Then Return
+
+  Error.Raise("You do not have permission to perform this operation")
+
+End
+
+
+Public Function Login(username As String, password As String) As Boolean
+
+  Dim query As String
+  Dim rs As Result
+
+  Init()
+
+  query = DB.Subst("SELECT username FROM users WHERE username = &1 AND password = &2;", username, password)
+  rs = $hConn.Exec(query)
+  Return rs.Count > 0
+
+End
+
+Public Function GetUsers() As Result
+
+  Init()
+  AdminRequired()
+
+  Return $hConn.Exec("SELECT username, fullname, admin FROM users;")
+
+End
+
+Public Sub NewUser(username As String, password As String, is_admin As Boolean)
+
+  Dim query As String
+
+  Init()
+  AdminRequired()
+
+  query = DB.Subst("INSERT INTO users (username, password, fullname, admin) VALUES (&1, &2, '', &3)", username, password, is_admin)
+  $hConn.Exec(query)
+
+End
+
+Public Sub DeleteUser(username As String)
+
+  Dim query As String
+
+  Init()
+  AdminRequired()
+
+  query = DB.Subst("DELETE FROM users WHERE username = &1", username)
+  $hConn.Exec(query)
+
+End
+
+Public Function UserExists(username As String) As Boolean
+
+  Dim query As String
+  Dim rs As Result
+
+  Init()
+
+  query = DB.Subst("SELECT username FROM users WHERE username = &1;", username)
+  rs = $hConn.Exec(query)
+  Return rs.Count > 0
+
+End
+
+Public Function GetFullname(username As String) As String
+
+  Dim query As String
+  Dim rs As Result
+
+  Init()
+  AdminOrOwnRequired(username)
+
+  query = DB.Subst("SELECT fullname FROM users WHERE username = &1", username)
+  rs = $hConn.Exec(query)
+  Return rs["fullname"]
+
+End
+
+Public Sub SetFullname(username As String, fullname As String)
+
+  Dim query As String
+
+  Init()
+  AdminOrOwnRequired(username)
+
+  query = DB.Subst("UPDATE users SET fullname = &1 WHERE username = &2", fullname, username)
+  $hConn.Exec(query)
+
+End
+
+Public Function SetPassword(username As String, oldpass As String, newpass As String) As Boolean
+
+  Dim query As String
+  Dim rs As Result
+
+  Init()
+  AdminOrOwnRequired(username)
+
+  query = DB.Subst("SELECT username FROM users WHERE username = &1 AND password = &2;", username, oldpass)
+  rs = $hConn.Exec(query)
+  If Not rs.Count Then Return False
+
+  query = DB.Subst("UPDATE users SET password = &1 WHERE username = &2 AND password = &3;", newpass, username, oldpass)
+  $hConn.Exec(query)
+
+  Return True
+
+End
+
+Public Function GetIsAdmin(username As String) As Boolean
+
+  Dim query As String
+  Dim rs As Result
+
+  Init()
+  AdminOrOwnRequired(username)
+
+  query = DB.Subst("SELECT admin FROM users WHERE username = &1", username)
+  rs = $hConn.Exec(query)
+  Return rs["admin"]
+
+End
+
+Public Sub SetIsAdmin(username As String, is_admin As Boolean)
+
+  Dim query As String
+
+  Init()
+  AdminRequired()
+
+  query = DB.Subst("UPDATE users SET admin = &1 WHERE username = &2", is_admin, username)
+  $hConn.Exec(query)
+
+End

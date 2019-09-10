@@ -1,0 +1,15 @@
+# Gambas Project File 3.0
+Startup=WebformLogin
+UseHttpServer=1
+Version=0.1.1
+Component=gb.db
+Component=gb.db.sqlite3
+Component=gb.util
+Component=gb.util.web
+Component=gb.web
+Component=gb.web.form
+Description="An example of CRUD made in Gambas web.form component"
+Authors="Matias De lellis <mati86dl at gmail.com>"
+TabSize=2
+Language=en_US
+Packager=1

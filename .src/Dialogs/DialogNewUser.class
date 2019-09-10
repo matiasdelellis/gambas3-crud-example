@@ -1,0 +1,73 @@
+' Gambas class file
+
+Export
+
+
+Public Sub WebForm_Open()
+
+  WebTextUsername.SetFocus()
+
+End
+
+Public Sub WebTextUsername_Activate()
+
+  If validateUser() Then
+    addNewUser()
+  Endif
+
+End
+
+Public Sub WebTextPassword_Activate()
+
+  If validateUser() Then
+    addNewUser()
+  Endif
+
+End
+
+Public Sub WebButtonAdd_Click()
+
+  addNewUser()
+
+End
+
+
+Public Sub WebButtonCancel_Click()
+
+  Me.Close
+
+End
+
+Public Sub WebTextUsername_Change()
+
+  WebButtonAdd.Enabled = validateUser()
+
+End
+
+Public Sub WebTextPassword_Change()
+
+  WebButtonAdd.Enabled = validateUser()
+
+End
+
+Private Function validateUser() As Boolean
+
+  ' TODO: Validate spaces, etc
+  If WebTextUsername.Text.Len < 4 Then Return False
+  If WebDatabase.UserExists(WebTextUsername.Text) Then Return False
+  If WebTextPassword.Text.Len < 8 Then Return False
+
+  Return True
+
+End
+
+Private Sub addNewUser()
+
+  WebDatabase.NewUser(WebTextUsername.Text, WebTextPassword.Text, WebCheckBoxAdmin.Checked)
+
+  WebformMain.loadUsersTable()
+  WebformMain.NotifyDone()
+
+  Me.Close
+
+End

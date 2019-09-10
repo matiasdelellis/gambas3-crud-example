@@ -1,0 +1,62 @@
+# Gambas Form File 3.0
+
+{ WebForm WebForm
+  #MoveScaled(0,0,68,42)
+  Expand = True
+  Arrangement = Arrange.Vertical
+  Spacing = True
+  { WebHBox1 WebHBox
+    #MoveScaled(1,1,66,27)
+    Expand = True
+    Spacing = True
+    { WebContainer2 WebVBox
+      #MoveScaled(1,1,13,25)
+      { imgIcon WebImage
+        #MoveScaled(1,1,11,11)
+        Image = "question.png"
+      }
+    }
+    { WebVBox1 WebVBox
+      #MoveScaled(15,1,48,25)
+      Expand = True
+      { WebLabel1 WebLabel
+        #MoveScaled(1,1,46,4)
+        Font = "sans-serif,normal,bold"
+        Text = ("Username")
+      }
+      { WebTextUsername WebTextBox
+        #MoveScaled(1,5,46,5)
+      }
+      { WebLabel2 WebLabel
+        #MoveScaled(1,10,46,4)
+        Font = "sans-serif,normal,bold"
+        Text = ("Initial Password")
+      }
+      { WebTextPassword WebTextBox
+        #MoveScaled(1,14,46,5)
+        Password = True
+      }
+      { WebCheckBoxAdmin WebCheckBox
+        #MoveScaled(1,19,46,4)
+        Text = ("Will be administrator")
+      }
+    }
+  }
+  { panButton WebHBox
+    #MoveScaled(1,29,66,7)
+    Spacing = True
+    { WebContainer3 WebContainer
+      #MoveScaled(1,1,27,5)
+      Expand = True
+    }
+    { WebButtonCancel WebButton
+      #MoveScaled(29,1,17,5)
+      Text = ("Cancel")
+    }
+    { WebButtonAdd WebButton
+      #MoveScaled(47,1,17,5)
+      Enabled = False
+      Text = ("Add")
+    }
+  }
+}

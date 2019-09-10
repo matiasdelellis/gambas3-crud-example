@@ -1,0 +1,67 @@
+# Gambas Form File 3.0
+
+{ WebForm WebForm
+  #MoveScaled(0,0,85,53)
+  Arrangement = Arrange.Vertical
+  Margin = True
+  Spacing = True
+  Title = ("Login")
+  { WebLabel1 WebLabel
+    #MoveScaled(1,1,83,4)
+    Font = "bold,2.5em"
+    Text = ("CRUD")
+    Alignment = Align.Center
+  }
+  { WebLabel2 WebLabel
+    #MoveScaled(1,6,83,4)
+    Font = "italic,2em"
+    Text = ("An example of CRUD made in Gambas web.form")
+    Alignment = Align.Center
+  }
+  { WebSeparator2 WebSeparator
+    #MoveScaled(1,11,83,4)
+  }
+  { WebHBox1 WebHBox
+    #MoveScaled(1,16,83,32)
+    { WebHBox2 WebHBox
+      #MoveScaled(1,1,8,30)
+      Expand = True
+    }
+    { WebContainer1 WebContainer
+      #MoveScaled(9,1,64,30)
+      Arrangement = Arrange.Vertical
+      Spacing = True
+      { WebLabelUser WebLabel
+        #MoveScaled(1,1,62,4)
+        Class = "control-label"
+        Text = ("Username")
+      }
+      { WebTextName WebTextBox
+        #MoveScaled(1,6,62,4)
+        Expand = True
+      }
+      { WebLabelPass WebLabel
+        #MoveScaled(1,11,62,4)
+        Class = "control-label"
+        Text = ("Password")
+      }
+      { WebTextPass WebTextBox
+        #MoveScaled(1,16,62,4)
+        Expand = True
+        Password = True
+      }
+      { WebSeparator1 WebSeparator
+        #MoveScaled(1,21,62,4)
+      }
+      { WebButtonLogin WebButton
+        #MoveScaled(1,26,62,4)
+        Class = "login-button"
+        Text = ("Login")
+      }
+    }
+    { WebHBox3 WebHBox
+      #MoveScaled(73,1,8,30)
+      Expand = True
+    }
+  }
+}

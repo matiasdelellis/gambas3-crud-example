@@ -1,0 +1,58 @@
+' Gambas class file
+
+Export
+
+Public Sub WebForm_Open()
+
+  WebTextName.SetFocus()
+
+End
+
+Public Sub WebButtonLogin_Click()
+
+  Login()
+
+End
+
+
+Public Sub WebTextName_Activate()
+
+  Login()
+
+End
+
+Public Sub WebTextPass_Activate()
+
+  Login()
+
+End
+
+Private Sub Login()
+
+  Dim sUsername As String
+  Dim sPassword As String
+
+  sUsername = Trim(WebTextName.Text)
+  If Not sUsername Then
+    Message.Warning("The username is empty...")
+    WebTextName.SetFocus(True)
+    Return
+  Endif
+
+  sPassword = Trim(WebTextPass.Text)
+  If Not sPassword Then
+    Message.Warning("The password is empty...")
+    WebTextPass.SetFocus(True)
+    Return
+  Endif
+
+  If WebDatabase.Login(sUsername, sPassword) Then
+    Session["username"] = sUsername
+    WebForm.Startup = "WebFormMain"
+    WebformLogin.Reload()
+  Else
+    WebTextName.SetFocus(True)
+    Message.Warning("The Username or Password is incorrect...")
+  Endif
+
+End

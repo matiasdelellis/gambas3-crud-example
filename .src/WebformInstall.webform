@@ -1,0 +1,143 @@
+# Gambas Form File 3.0
+
+{ WebForm WebForm
+  #MoveScaled(0,0,96,115)
+  Arrangement = Arrange.Vertical
+  Spacing = True
+  Title = ("Instalation")
+  { WebLabel1 WebLabel
+    #MoveScaled(1,1,94,2)
+    Font = "bold,2.5em"
+    Text = ("CRUD: Instalation")
+    Alignment = Align.Center
+  }
+  { WebLabel2 WebLabel
+    #MoveScaled(1,4,94,2)
+    Font = "italic,2em"
+    Text = ("An example of CRUD made in Gambas web.form")
+    Alignment = Align.Center
+  }
+  { WebSeparator2 WebSeparator
+    #MoveScaled(1,7,94,2)
+  }
+  { WebHBox1 WebHBox
+    #MoveScaled(1,10,94,100)
+    { WebHBox5 WebHBox
+      #MoveScaled(1,1,8,98)
+      Expand = True
+    }
+    { WebVbox1 WebVBox
+      #MoveScaled(9,1,74,98)
+      Spacing = True
+      { WebBoxDatabase WebContainer
+        #MoveScaled(1,1,72,33)
+        Arrangement = Arrange.Vertical
+        Spacing = True
+        { WebLabel3 WebLabel
+          #MoveScaled(1,1,70,3)
+          Class = "control-label"
+          Text = ("Database type")
+        }
+        { WebComboDbType WebComboBox
+          #MoveScaled(1,5,70,4)
+          List = [("sqlite3")]
+          Text = ("sqlite3")
+        }
+        { WebLabel4 WebLabel
+          #MoveScaled(1,10,70,3)
+          Class = "control-label"
+          Text = ("Database")
+        }
+        { WebTextDatabase WebTextBox
+          #MoveScaled(1,14,70,4)
+          Enabled = False
+          Expand = True
+          Text = ("database.db")
+        }
+        { WebLabelSqlite WebLabel
+          #MoveScaled(1,19,70,4)
+          Class = "alert alert-warning"
+          Text = ("The only implementation is sqlite3")
+        }
+        { WebButtonCreateDb WebButton
+          #MoveScaled(1,24,70,4)
+          Text = ("Create database") & "..."
+        }
+        { WebSeparator3 WebSeparator
+          #MoveScaled(1,29,70,2)
+        }
+      }
+      { WebBoxUser WebContainer
+        #MoveScaled(1,35,72,36)
+        Enabled = False
+        Arrangement = Arrange.Vertical
+        Spacing = True
+        { WebLabel5 WebLabel
+          #MoveScaled(1,1,70,3)
+          Class = "control-label"
+          Text = ("Username")
+        }
+        { WebTextCreateName WebTextBox
+          #MoveScaled(1,5,70,4)
+          Expand = True
+        }
+        { WebLabel6 WebLabel
+          #MoveScaled(1,10,70,3)
+          Class = "control-label"
+          Text = ("Password")
+        }
+        { WebTextCreatePass WebTextBox
+          #MoveScaled(1,14,70,4)
+          Expand = True
+          Password = True
+        }
+        { WebLabel7 WebLabel
+          #MoveScaled(1,19,70,3)
+          Class = "control-label"
+          Text = ("Password")
+        }
+        { WebTextCreatePass2 WebTextBox
+          #MoveScaled(1,23,70,4)
+          Expand = True
+          Password = True
+        }
+        { WebSeparator1 WebSeparator
+          #MoveScaled(1,28,70,2)
+        }
+        { WebButtonCreateAdmin WebButton
+          #MoveScaled(1,31,70,4)
+          Enabled = False
+          Text = ("Create admin user") & "..."
+        }
+      }
+      { WebBoxFinalize WebContainer
+        #MoveScaled(1,72,72,22)
+        Arrangement = Arrange.Vertical
+        Spacing = True
+        { WebSeparator4 WebSeparator
+          #MoveScaled(1,1,70,2)
+        }
+        { WebLabelInstaled WebLabel
+          #MoveScaled(1,4,70,4)
+          Class = "alert alert-warning"
+          Visible = False
+          Text = ("It seems that it is already installed..")
+        }
+        { WebButtonRedirect WebButton
+          #MoveScaled(1,9,70,4)
+          Enabled = False
+          Text = ("Redirect to CRUD example") & "..."
+        }
+        { WebButtonReset WebButton
+          #MoveScaled(1,14,70,4)
+          Visible = False
+          Text = ("WARNING: Reset database") & "..."
+        }
+      }
+    }
+    { WebHBox6 WebHBox
+      #MoveScaled(83,1,8,98)
+      Expand = True
+    }
+  }
+}

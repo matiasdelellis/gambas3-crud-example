@@ -1,0 +1,168 @@
+' Gambas class file
+
+Export
+
+Private $rUsers As Result
+
+
+Public Sub _new()
+
+  Dim bAdmin As Boolean
+
+  WebformMain.AddJavascriptFile("toastify.js")
+
+  WebTableUsers.Style["height"] = "200px"
+
+  WebTableUsers.Columns.Count = 3
+
+  WebTableUsers.Columns[0].Text = "Username"
+  WebTableUsers.Columns[0].Wrap = False
+
+  WebTableUsers.Columns[1].Text = "Fullname"
+  WebTableUsers.Columns[1].Expand = True
+  WebTableUsers.Columns[1].Wrap = True
+
+  WebTableUsers.Columns[2].Text = "Is admin"
+  WebTableUsers.Columns[2].Wrap = False
+
+  updateFullname()
+
+  bAdmin = WebDatabase.GetIsAdmin(Session["username"])
+  If bAdmin Then
+    WebBoxAmin.Visible = True
+    loadUsersTable()
+  Endif
+
+  WebHtmlCopyright.Html = "<footer>&copy; Copyright " & Year(Now) & " - " & "John Doe" & "</footer>"
+
+End
+
+Public Sub WebTableUsers_Data(Row As Integer, Column As Integer, Data As WebTableData)
+
+  $rUsers.MoveTo(row)
+
+  Select Column
+    Case 0
+      Data.Text = $rUsers["username"]
+    Case 1
+      Data.Text = $rUsers["fullname"]
+    Case 2
+      If $rUsers["admin"] Then Data.Text = "Admin"
+  End Select
+
+End
+
+Public Sub WebTableUsers_Select()
+
+  Dim canRemove As Boolean = True
+  Dim username As String
+
+  If Not usersTableIsSelected() Then
+    canRemove = False
+  Endif
+
+  username = usersTableGetSelection()
+  If username = Session["username"] Then
+    canRemove = False
+  Endif
+
+  WebButtonRemoveUser.Enabled = canRemove
+
+End
+
+Public Sub WebButtonRename_Click()
+
+ DialogSetFullname.ShowModal(Me)
+
+End
+
+Public Sub WebButtonChangePassword_Click()
+
+  DialogChangePassword.ShowModal(Me)
+
+End
+
+Public Sub WebButtonAddUser_Click()
+
+  DialogNewUser.ShowModal(Me)
+
+End
+
+Public Sub WebButtonLogout_Click()
+
+  Session.Abandon()
+
+  WebForm.Startup = "WebFormLogin"
+  WebformMain.Reload()
+
+End
+
+Public Sub WebButtonRemoveUser_Click()
+
+  Dim username As String
+
+  username = usersTableGetSelection()
+
+  Message.Question("Do you really want to remove this user? " & username, ("Cancel"), ("Remove"))
+
+End
+
+Public Sub WebButtonRemoveUser_Message(Source As WebControl, Action As String)
+
+  Dim username As String
+
+  If Source = WebButtonRemoveUser And If Action = "Remove" Then
+    username = usersTableGetSelection()
+    WebDatabase.DeleteUser(username)
+
+    loadUsersTable()
+  Endif
+
+End
+
+Public Sub updateFullname()
+
+  Dim sFullname As String
+
+  sFullname = WebDatabase.GetFullname(Session["username"])
+  If Not sFullname Then
+    WebLabelGreet.Text = "Welcome user, remember set your password and full name..."
+  Else
+    WebLabelGreet.Text = "Welcome " & sFullname
+  Endif
+
+End
+
+Public Sub loadUsersTable()
+
+  $rUsers = WebDatabase.GetUsers()
+  WebTableUsers.Count = $rUsers.Count
+
+End
+
+Private Function usersTableGetSelection() As String
+
+  Dim row As Integer
+  Dim username As String
+
+  If usersTableIsSelected() Then
+    row = WebTableUsers.Selection[0]
+    $rUsers.MoveTo(row)
+    username = $rUsers["username"]
+  Endif
+
+  Return username
+
+End
+
+Private Function usersTableIsSelected() As Boolean
+
+  Return WebTableUsers.Selection.Count = 1
+
+End
+
+Public Sub NotifyDone()
+
+  WebForm._AddJavascript("Toastify({text: \'" & ("Done") & "\', gravity: \'bottom\', close: true }).showToast();")
+
+End

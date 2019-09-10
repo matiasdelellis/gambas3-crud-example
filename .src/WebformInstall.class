@@ -1,0 +1,161 @@
+' Gambas class file
+
+Export
+
+Public Sub _new()
+
+  Dim dbFile As String
+
+  dbFile = WebTextDatabase.Text
+  If Exist(Application.path &/ dbFile) Then
+    WebBoxUser.Enabled = True
+    WebBoxFinalize.Enabled = True
+    WebLabelInstaled.Visible = True
+    WebButtonReset.Visible = True
+  Endif
+
+End
+
+Private Sub CreateDb()
+
+  Dim hConn As Connection
+
+  Dim dbType As String
+  Dim dbFile As String
+
+  dbType = WebComboDbType.Text
+  dbFile = WebTextDatabase.Text
+
+  ' Create database..
+  hConn = New Connection
+  With hConn
+    .Type = dbType
+    .Host = Application.path
+    .Name = ""
+    .Open
+    .Databases.Add(dbFile)
+    .Close
+  End With
+
+  'Open conection
+  hConn = OpendDb()
+  hConn.Exec("CREATE TABLE IF NOT EXISTS users (username TEXT UNIQUE, password TEXT, fullname TEXT, admin BOOL)")
+  hConn.Close()
+
+End
+
+Private Function OpendDb() As Connection
+
+  Dim hConn As Connection
+
+  Dim dbType As String
+  Dim dbFile As String
+
+  dbType = WebComboDbType.Text
+  dbFile = WebTextDatabase.Text
+
+  'Open conection
+  hConn = New Connection
+  With hConn
+    .Type = dbType
+    .Host = Application.path
+    .Name = dbFile
+  End With
+
+  Try hConn.Open()
+  If Error Then
+    Error.Raise("Cannot open Database. Error = " & Error.Text)
+  Endif
+
+  Return hConn
+
+End
+
+Public Sub WebButtonCreateDb_Click()
+
+  CreateDb()
+
+  WebBoxDatabase.Enabled = False
+  WebBoxUser.Enabled = True
+
+  WebTextCreateName.SetFocus()
+
+End
+
+Public Sub WebButtonCreateAdmin_Click()
+
+  Dim hConn As Connection
+
+  Dim username As String
+  Dim password As String
+
+  username = WebTextCreateName.Text
+  password = WebTextCreatePass.Text
+
+  hConn = OpendDb()
+
+  Try hConn.Exec("INSERT INTO users (username, password, fullname, admin) VALUES (&1, &2, &3, &4)", username, password, "", True)
+  If Error Then
+    Error.Raise("Cannot create admin. Error = " & Error.Text)
+  Endif
+
+  WebBoxUser.Enabled = False
+  WebButtonRedirect.Enabled = True
+
+End
+
+Public Sub WebButtonRedirect_Click()
+
+  WebForm.Startup = "WebformLogin"
+  WebformInstall.Reload()
+
+End
+
+Public Sub WebButtonReset_Click()
+
+  Dim dbFile As String
+
+  dbFile = WebTextDatabase.Text
+  If Exist(Application.path &/ dbFile) Then
+    Try Kill Application.path &/ dbFile
+  Endif
+
+  Session.Abandon()
+
+  WebformInstall.Reload()
+
+End
+
+Public Sub WebTextCreateName_Change()
+
+  WebButtonCreateAdmin.Enabled = validateAdmin()
+
+End
+
+Public Sub WebTextCreatePass_Change()
+
+  WebButtonCreateAdmin.Enabled = validateAdmin()
+
+End
+
+Public Sub WebTextCreatePass2_Change()
+
+  WebButtonCreateAdmin.Enabled = validateAdmin()
+
+End
+
+Private Function validateAdmin() As Boolean
+
+  If WebTextCreateName.Text.Len < 4 Then
+    Return False
+  Endif
+  If WebTextCreatePass.Text.Len < 8 Then
+    Return False
+  Endif
+  If WebTextCreatePass2.Text.Len < 8 Then
+    Return False
+  Endif
+
+  Return (WebTextCreatePass.Text = WebTextCreatePass2.Text)
+
+End

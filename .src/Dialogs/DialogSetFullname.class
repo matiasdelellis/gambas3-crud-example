@@ -1,0 +1,56 @@
+' Gambas class file
+
+Export
+
+Public Sub WebForm_Open()
+
+  WebTextFullname.Text = WebDatabase.GetFullname(Session["username"])
+
+  WebTextFullname.SetFocus()
+
+End
+
+Public Sub WebButtonSave_Click()
+
+  If WebTextFullname.Text.Len Then
+    saveFullname()
+  Endif
+
+End
+
+Public Sub WebButtonCancel_Click()
+
+  Me.Close
+
+End
+
+Public Sub WebTextFullname_Change()
+
+  WebButtonSave.Enabled = WebTextFullname.Text.Len > 0
+
+End
+
+Public Sub WebTextFullname_Activate()
+
+  If WebTextFullname.Text.Len Then
+    saveFullname()
+  Endif
+
+End
+
+
+Private Sub saveFullname()
+
+  WebDatabase.SetFullname(Session["username"], WebTextFullname.Text)
+
+  WebformMain.updateFullname()
+
+  If WebDatabase.GetIsAdmin(Session["username"]) Then
+    WebformMain.loadUsersTable()
+  Endif
+
+  WebformMain.NotifyDone()
+
+  Me.Close
+
+End

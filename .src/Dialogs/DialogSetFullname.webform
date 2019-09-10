@@ -1,0 +1,48 @@
+# Gambas Form File 3.0
+
+{ WebForm WebForm
+  #MoveScaled(0,0,68,29)
+  Expand = True
+  Arrangement = Arrange.Vertical
+  Spacing = True
+  Title = ("Fullname")
+  { WebHBox1 WebHBox
+    #MoveScaled(1,1,66,14)
+    Spacing = True
+    { WebContainer2 WebVBox
+      #MoveScaled(1,1,14,12)
+      { imgIcon WebImage
+        #MoveScaled(1,1,12,10)
+        Image = "question.png"
+      }
+    }
+    { WebVBox1 WebVBox
+      #MoveScaled(16,1,49,12)
+      { WebLabel1 WebLabel
+        #MoveScaled(1,1,47,4)
+        Font = "sans-serif,normal,bold"
+        Text = ("Fullname")
+      }
+      { WebTextFullname WebTextBox
+        #MoveScaled(1,5,47,5)
+      }
+    }
+  }
+  { panButton WebHBox
+    #MoveScaled(1,16,66,7)
+    Spacing = True
+    { WebContainer3 WebContainer
+      #MoveScaled(1,1,27,5)
+      Expand = True
+    }
+    { WebButtonCancel WebButton
+      #MoveScaled(29,1,17,5)
+      Text = ("Cancel")
+    }
+    { WebButtonSave WebButton
+      #MoveScaled(47,1,17,5)
+      Enabled = False
+      Text = ("Save")
+    }
+  }
+}
