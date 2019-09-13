@@ -50,9 +50,7 @@
         }
         { WebTextDatabase WebTextBox
           #MoveScaled(1,14,70,4)
-          Enabled = False
           Expand = True
-          Text = ("database.db")
         }
         { WebLabelSqlite WebLabel
           #MoveScaled(1,19,70,4)

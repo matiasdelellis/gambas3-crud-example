@@ -15,9 +15,9 @@ Private Sub Init()
   $hConn = New Connection
 
   With $hConn
-     .Type = "sqlite3"
+     .Type = Settings["dbType"]
      .Host = Application.path
-     .Name = "database.db"
+     .Name = Settings["dbName"]
   End With
 
   Try $hConn.Open()

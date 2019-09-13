@@ -5,6 +5,7 @@ Version=0.1.1
 Component=gb.db
 Component=gb.db.sqlite3
 Component=gb.util
+Component=gb.settings
 Component=gb.util.web
 Component=gb.web
 Component=gb.web.form

@@ -7,6 +7,7 @@ WebformLogin
 gb.db
 gb.db.sqlite3
 gb.util
+gb.settings
 gb.util.web
 gb.web
 gb.web.form

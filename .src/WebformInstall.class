@@ -2,15 +2,17 @@
 
 Export
 
-Public Sub _new()
+Public Sub WebForm_Open()
 
   Dim dbFile As String
 
-  dbFile = WebTextDatabase.Text
+  dbFile = Settings["dbName", "database.db"]
+  WebTextDatabase.Text = dbFile
+
   If Exist(Application.path &/ dbFile) Then
-    WebBoxUser.Enabled = True
-    WebBoxFinalize.Enabled = True
+    WebBoxDatabase.Enabled = False
     WebLabelInstaled.Visible = True
+    WebButtonRedirect.Enabled = True
     WebButtonReset.Visible = True
   Endif
 
@@ -37,6 +39,9 @@ Private Sub CreateDb()
     .Close
   End With
 
+  Settings["dbType"] = dbType
+  Settings["dbName"] = dbFile
+
   'Open conection
   hConn = OpendDb()
   hConn.Exec("CREATE TABLE IF NOT EXISTS users (username TEXT UNIQUE, password TEXT, fullname TEXT, admin BOOL)")
@@ -51,8 +56,8 @@ Private Function OpendDb() As Connection
   Dim dbType As String
   Dim dbFile As String
 
-  dbType = WebComboDbType.Text
-  dbFile = WebTextDatabase.Text
+  dbType = Settings["dbType", Null]
+  dbFile = Settings["dbName", Null]
 
   'Open conection
   hConn = New Connection
@@ -115,13 +120,13 @@ Public Sub WebButtonReset_Click()
 
   Dim dbFile As String
 
-  dbFile = WebTextDatabase.Text
-  If Exist(Application.path &/ dbFile) Then
+  dbFile = Settings["dbName", Null]
+
+  If dbFile And If Exist(Application.path &/ dbFile) Then
     Try Kill Application.path &/ dbFile
   Endif
 
   Session.Abandon()
-
   WebformInstall.Reload()
 
 End
