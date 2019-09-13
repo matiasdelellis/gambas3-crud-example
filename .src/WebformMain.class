@@ -9,8 +9,6 @@ Public Sub _new()
 
   Dim bAdmin As Boolean
 
-  WebformMain.AddJavascriptFile("toastify.js")
-
   WebTableUsers.Style["height"] = "200px"
 
   WebTableUsers.Columns.Count = 3
@@ -163,6 +161,6 @@ End
 
 Public Sub NotifyDone()
 
-  WebForm._AddJavascript("Toastify({text: \'" & ("Done") & "\', gravity: \'bottom\', close: true }).showToast();")
+  WebNotify.Toast("Done")
 
 End

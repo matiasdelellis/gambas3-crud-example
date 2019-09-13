@@ -1,0 +1,6 @@
+' Gambas class file
+
+Export
+
+Public Const Top As String = "top"
+Public Const Botton As String = "bottom"

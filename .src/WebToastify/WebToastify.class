@@ -1,0 +1,77 @@
+' Gambas class file
+
+Export
+Inherits WebControl
+
+Public Const _IsControl As Boolean = True
+Public Const _IsVirtual As Boolean = True
+Public Const _Properties As String = "*,-Class,-Width,-Height,-Visible,-Expand,-Ignore,Close,Gravity{Gravity.*},Position{Position.*}"
+Public Const _Group As String = "Special"
+
+Property Close As Boolean
+Property Gravity As String
+Property Position As String
+
+Private $bClose As Boolean
+Private $sGravity As String
+Private $sPosition As String
+
+Public Sub _new()
+
+  WebformMain.AddJavascriptFile("toastify.js")
+
+End
+
+Public Sub Toast(text As String)
+
+  Dim toastJs As String
+
+  toastJs = "Toastify({"
+  toastJs &= "text: \'" & Html(text) & "\', "
+  toastJs &= "gravity: \'" & $sGravity & "\', "
+  toastJs &= "position: \'" & $sPosition & "\', "
+  toastJs &= "close: " & JS($bClose)
+  toastJs &= "}).showToast();"
+
+  WebForm._AddJavascript(toastJs)
+
+End
+
+Private Function Close_Read() As Boolean
+
+  Return $bClose
+
+End
+
+Private Sub Close_Write(Value As Boolean)
+
+  If $bClose = Value Then Return
+  $bClose = Value
+
+End
+
+Private Function Gravity_Read() As String
+
+  Return $sGravity
+
+End
+
+Private Sub Gravity_Write(Value As String)
+
+  If $sGravity = Value Then Return
+  $sGravity = Value
+
+End
+
+Private Function Position_Read() As String
+
+  Return $sPosition
+
+End
+
+Private Sub Position_Write(Value As String)
+
+  If $sPosition = Value Then Return
+  $sPosition = Value
+
+End

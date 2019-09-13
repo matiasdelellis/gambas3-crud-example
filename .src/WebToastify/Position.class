@@ -1,0 +1,7 @@
+' Gambas class file
+
+Export
+
+Public Const Left As String = "left"
+Public Const Center As String = "center"
+Public Const Right As String = "right"

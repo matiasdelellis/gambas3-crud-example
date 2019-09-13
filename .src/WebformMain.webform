@@ -67,4 +67,10 @@
   { WebHtmlCopyright WebHtml
     #MoveScaled(1,67,106,3)
   }
+  { WebNotify WebToastify
+    #MoveScaled(80,69)
+    Close = True
+    Gravity = Gravity.Botton
+    Position = Position.Left
+  }
 }
