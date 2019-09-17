@@ -4,6 +4,9 @@ Export
 
 Public Sub WebForm_Open()
 
+  WebTextName.Text = ""
+  WebTextPass.Text = ""
+
   WebTextName.SetFocus()
 
 End
